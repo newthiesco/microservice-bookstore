@@ -64,10 +64,10 @@ module "aws_auth" {
   source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
   version = "~> 20.34.0"
 
-  depends_on = [module.eks]
+  depends_on = [module.eks, module.eks.cluster_id]
 
   manage_aws_auth_configmap = true
-  #eks_cluster_name          = module.eks.cluster_name
+  eks_cluster_name          = module.eks.cluster_name
 
   aws_auth_roles = [
     {
