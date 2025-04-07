@@ -67,7 +67,7 @@ module "aws_auth" {
   depends_on = [module.eks]
 
   manage_aws_auth_configmap = true
-  eks_cluster_name           = module.eks.my-cluster
+  #eks_cluster_name          = module.eks.cluster_name
 
   aws_auth_roles = [
     {
