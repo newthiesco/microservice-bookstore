@@ -1,12 +1,13 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.34.0"
-
+ 
   cluster_name    = "my-cluster"
   cluster_version = "1.31"
-
-  cluster_endpoint_public_access  = true
-
+ 
+  cluster_endpoint_public_access = true
+ 
+  #This block configures cluster addons like CoreDNS, kube-proxy, and vpc-cni to use the most recent versions.
   cluster_addons = {
     coredns = {
       most_recent = true
@@ -18,29 +19,30 @@ module "eks" {
       most_recent = true
     }
   }
-
+  #These parameters specify the Virtual Private Cloud (VPC) and subnet details for
+  #the EKS cluster using outputs from another module (named "vpc").
   vpc_id                   = module.vpc.vpc_id
   subnet_ids               = module.vpc.private_subnets
   control_plane_subnet_ids = module.vpc.public_subnets
-
-  # EKS Managed Node Group(s)
+ 
+ 
+  # EKS Managed Node Group(s) Configuration
   eks_managed_node_group_defaults = {
     instance_types = ["m6i.large", "m5.large", "m5n.large", "t3.large"]
   }
-
+ 
   eks_managed_node_groups = {
-
     green = {
       use_custom_launch_template = false
-      min_size     = 1
-      max_size     = 10
-      desired_size = 1
-
+      min_size                   = 1
+      max_size                   = 10
+      desired_size               = 1
+ 
       instance_types = ["t3.large"]
       capacity_type  = "SPOT"
     }
   }
-
+ 
   # Fargate Profile(s)
   fargate_profiles = {
     default = {
@@ -52,10 +54,10 @@ module "eks" {
       ]
     }
   }
-
+ 
   # aws-auth configmap
   manage_aws_auth_configmap = false
-
+ 
   aws_auth_roles = [
     {
       rolearn  = "arn:aws:iam::594182463744:role/role1"
@@ -63,7 +65,7 @@ module "eks" {
       groups   = ["system:masters"]
     },
   ]
-
+ 
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::594182463744:user/user1"
@@ -76,14 +78,15 @@ module "eks" {
       groups   = ["system:masters"]
     },
   ]
-
+ 
   aws_auth_accounts = [
     "594182463744",
     "888888888888",
   ]
-
+ 
   tags = {
     Environment = "dev"
     Terraform   = "true"
   }
 }
+ 
