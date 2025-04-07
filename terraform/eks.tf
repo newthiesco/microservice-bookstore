@@ -64,7 +64,7 @@ module "aws_auth" {
   source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
   version = "~> 20.34.0"
 
-  depends_on = [module.eks, module.eks.cluster_id]
+  depends_on = [module.eks, module.eks.cluster_id, module.eks.cluster_iam_role_arn,]
 
   manage_aws_auth_configmap = true
   
