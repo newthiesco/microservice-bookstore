@@ -60,11 +60,17 @@ module "eks" {
   }
 }
 
+resource "time_sleep" "wait_30_seconds" {
+  depends_on = [module.eks]
+  create_duration = "30s"
+}
+
+
 module "aws_auth" {
   source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
   version = "~> 20.34.0"
 
-  depends_on = [module.eks, module.eks.cluster_id, module.eks.cluster_iam_role_arn, module.eks.cluster_certificate_authority_data,]
+  depends_on = [module.eks, module.eks.cluster_id, module.eks.cluster_iam_role_arn, module.eks.cluster_certificate_authority_data, time_sleep.wait_30_seconds,]
 
   manage_aws_auth_configmap = true
   
