@@ -60,15 +60,6 @@ module "eks" {
   }
 }
 
-resource "time_sleep" "wait_30_seconds" {
-  depends_on = [module.eks]
-  create_duration = "30s"
-}
-
-
-module "eks" {
-  source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
-  version = "~> 20.0"
 
   manage_aws_auth_configmap = true
 
