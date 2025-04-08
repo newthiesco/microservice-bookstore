@@ -1,6 +1,6 @@
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.34.0"
+  source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
+  version = "~> 20.35.0"
 
   cluster_name    = "my-cluster"
   cluster_version = "1.31"
@@ -66,17 +66,15 @@ resource "time_sleep" "wait_30_seconds" {
 }
 
 
-module "aws_auth" {
+module "eks" {
   source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
-  version = "~> 20.34.0"
-
-  depends_on = [module.eks, module.eks.cluster_id, module.eks.cluster_iam_role_arn, module.eks.cluster_certificate_authority_data, time_sleep.wait_30_seconds,]
+  version = "~> 20.0"
 
   manage_aws_auth_configmap = true
-  
+
   aws_auth_roles = [
     {
-      rolearn  = "arn:aws:iam::594182463744:role/role1"
+      rolearn  = "arn:aws:iam::66666666666:role/role1"
       username = "role1"
       groups   = ["system:masters"]
     },
@@ -84,21 +82,19 @@ module "aws_auth" {
 
   aws_auth_users = [
     {
-      userarn  = "arn:aws:iam::594182463744:user/user1"
+      userarn  = "arn:aws:iam::66666666666:user/user1"
       username = "user1"
       groups   = ["system:masters"]
     },
     {
-      userarn  = "arn:aws:iam::594182463744:user/user2"
+      userarn  = "arn:aws:iam::66666666666:user/user2"
       username = "user2"
       groups   = ["system:masters"]
     },
   ]
 
   aws_auth_accounts = [
-    "594182463744",
+    "777777777777",
     "888888888888",
   ]
 }
-
-
