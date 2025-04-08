@@ -1,6 +1,6 @@
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
-  version = "~> 20.35.0"
+   source  = "terraform-aws-modules/eks/aws"
+  version = "20.35.0"
 
   cluster_name    = "my-cluster"
   cluster_version = "1.31"
@@ -60,8 +60,11 @@ module "eks" {
   }
 }
 
+module "aws_auth" {
+  source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
+  version = "~> 20.35.0"
 
-  manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = false
 
   aws_auth_roles = [
     {
@@ -88,4 +91,5 @@ module "eks" {
     "777777777777",
     "888888888888",
   ]
+
 }
