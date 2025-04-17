@@ -11,6 +11,6 @@ spec:
     path: manifests/observability
   destination:
     server: https://kubernetes.default.svc
-    namespace: <specific_namespace>
+    namespace: monitoring
   syncPolicy:
     automated: {}
