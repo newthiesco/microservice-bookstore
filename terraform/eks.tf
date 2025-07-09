@@ -64,7 +64,7 @@ module "aws_auth" {
   source  = "terraform-aws-modules/eks/aws//modules/aws-auth"
   version = "~> 20.35.0"
 
-  manage_aws_auth_configmap =  true
+  manage_aws_auth_configmap = true
 
   aws_auth_roles = [
     {
@@ -85,11 +85,15 @@ module "aws_auth" {
       username = "user2"
       groups   = ["system:masters"]
     },
+    {
+      userarn  = "arn:aws:iam::970547342192:user/cloud-engineer"
+      username = "cloud-engineer"
+      groups   = ["system:masters"]
+    },
   ]
 
   aws_auth_accounts = [
     "777777777777",
     "888888888888",
   ]
-
 }
